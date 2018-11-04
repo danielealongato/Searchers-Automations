@@ -20,7 +20,10 @@ for busca in google_me:
     search.send_keys(busca)
     search.send_keys(Keys.RETURN)
 
-    ids = browser.find_elements_by_xpath("//div[@class='sbqs_c']")
+    links = browser.find_elements_by_css_selector('div.r a:nth-child(1)')
 
-    for item in ids:
-        print(item.text)
+    for link in links:
+        href = link.get_attribute("href")
+        print(href)
+
+    browser.close()
