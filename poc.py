@@ -44,6 +44,7 @@ for busca in google_me:
         browser.switch_to.window(browser.window_handles[1])
 
         browser.get(link_page)
+
         scrolling_page(driver=browser)
         take_picture(driver=browser, name_photo=busca)
         get_text_page(driver=browser, link_page=link_page)
