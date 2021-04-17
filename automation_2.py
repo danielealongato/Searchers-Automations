@@ -1,41 +1,61 @@
-import selenium
-import chromedriver_binary
 import json
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
-buscas_json = '{"google-me": ["Nextel","telefonia do futuro","selenium python"]}'
+from components.utils import (take_picture,
+                              get_text_page,
+                              scrolling_page)
+
+buscas_json = '{"google-me": ["Automação de processos", "Python", "Agilizando tarefas repetitivas"]}'
 buscas = json.loads(buscas_json)
 
 resultados = {}
 google_me = buscas["google-me"]
+browser = webdriver.Chrome()
+browser.get('http://www.google.com')
+browser.find_element_by_xpath('//*[@id="zV9nZe"]/div').click()
+browser.fullscreen_window()
 
 for busca in google_me:
-    browser = webdriver.Chrome()
-    browser.get('http://www.google.com')
     search = browser.find_element_by_name('q')
+
+    browser.find_element_by_name('q').clear()
     search.send_keys(busca)
     search.send_keys(Keys.RETURN)
 
-    links = browser.find_elements_by_css_selector('div.r a:first-child')
+    scrolling_page(driver=browser)
+    links = browser.find_elements_by_css_selector('div.g a:first-child')
+    list_links = []
+    for link in links:
+        page = link.get_attribute("href")
+        if len(list_links) <= 2:
+            if not "google" in page:
+                print(page)
+                list_links.append(page)
+        else:
+            break
 
-    link1 = links[0].get_attribute("href")
-    link2 = links[3].get_attribute("href")
-    link3 = links[6].get_attribute("href")
+    for link_page in list_links:
+        # open new blank tab
+        browser.switch_to.window(browser.window_handles[0])
+        browser.execute_script("window.open();")
+        # switch to the new window which is second in window_handles array
+        browser.switch_to.window(browser.window_handles[1])
 
-    print(link1)
-    print(link2)
-    print(link3)
+        browser.get(link_page)
+        scrolling_page(driver=browser)
+        take_picture(driver=browser, name_photo=busca)
+        get_text_page(driver=browser, link_page=link_page)
 
-    resultados.update({busca: [link1, link2, link3]})
+        browser.switch_to.window(browser.window_handles[1])
+        browser.close()
 
-    browser.close()
+        # resultados.update({busca: [link_page]})
+    browser.switch_to.window(browser.window_handles[0])
+browser.close()
 print(resultados)
 resultados_json = json.dumps(resultados)
-arquivo = open("resultados.json","w")
+arquivo = open("resultados.json", "w")
 arquivo.write(resultados_json)
 arquivo.close()
