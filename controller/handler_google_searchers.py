@@ -12,11 +12,10 @@ class HandlerSearchers:
 
     def flow_search(self):
 
+        print('Abrindo o Browser...')
+        self.searcher_google.open_google()
+        self.utils.maximize_window()
         for item in self.list_search:
-            print('Abrindo o Browser...')
-            self.searcher_google.open_google()
-            self.utils.maximize_window()
-
             print('Iniciando as pesquisas...')
             self.searcher_google.new_search(text=item)
             self.utils.scrolling_page()
@@ -31,9 +30,9 @@ class HandlerSearchers:
             for link in list_links:
                 self.utils.open_new_tab(link_page=link)
                 self.utils.open_link(link=link)
+                print('Tirando um printscreen... ;p')
+                self.utils.take_picture(name_photo=item)
                 self.utils.scrolling_page()
-                # print('Tirando um printscreen... ;p')
-                # self.utils.take_picture(name_photo=item)
                 # print('Coletando os dados da tela...')
                 # self.utils.get_text_page(link_page=link)
                 print('Fechando a aba...')

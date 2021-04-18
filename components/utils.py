@@ -50,4 +50,4 @@ class Utils:
         self.driver.get(link)
 
     def maximize_window(self):
-        self.driver.fullscreen_window()
+        self.driver.maximize_window()

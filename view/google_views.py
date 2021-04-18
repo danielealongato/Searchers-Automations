@@ -9,6 +9,7 @@ class GoogleHandler:
         self.driver = driver
 
     def new_search(self, text):
+        self.driver.switch_to.window(self.driver.window_handles[0])
         search = self.driver.find_element_by_name('q')
 
         self.driver.find_element_by_name('q').clear()
