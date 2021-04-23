@@ -117,4 +117,5 @@ geckodriver.log
 model.py___jb_tmp___/*
 components/__pycache__/__init__.cpython-37.pyc
 *.pyc
-*.pyc
+controller/__pycache__/handler_google_searchers.cpython-37.pyc
+controller/__pycache__/__init__.cpython-37.pyc

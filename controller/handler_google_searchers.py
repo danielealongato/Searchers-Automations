@@ -2,6 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from view.google_views import GoogleHandler
 from components.utils import Utils
+from tqdm import tqdm
+
 
 class HandlerSearchers:
     def __init__(self):
@@ -15,7 +17,7 @@ class HandlerSearchers:
         print('Abrindo o Browser...')
         self.searcher_google.open_google()
         self.utils.maximize_window()
-        for item in self.list_search:
+        for item in tqdm(self.list_search):
             print('Iniciando as pesquisas...')
             self.searcher_google.new_search(text=item)
             self.utils.scrolling_page()
@@ -27,7 +29,7 @@ class HandlerSearchers:
             list_links = self.searcher_google.validate_list_links(link_list=links)
 
             print('Aplicando para as buscas encontradas...')
-            for link in list_links:
+            for link in tqdm(list_links):
                 self.utils.open_new_tab(link_page=link)
                 self.utils.open_link(link=link)
                 print('Tirando um printscreen... ;p')
